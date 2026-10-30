@@ -4,7 +4,6 @@ import zipfile
 import subprocess
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-# 1. تنزيل السيرفر وفك ضغطه
 url = "https://github.com/XTLS/Xray-core/releases/download/v1.8.24/Xray-linux-64.zip"
 urllib.request.urlretrieve(url, "app.zip")
 with zipfile.ZipFile("app.zip", 'r') as z:
@@ -12,15 +11,12 @@ with zipfile.ZipFile("app.zip", 'r') as z:
 os.rename("xray", "web_server")
 os.chmod("web_server", 0o755)
 
-# 2. إنشاء الإعدادات
 config_data = '{"log":{"loglevel":"warning"},"inbounds":[{"port":8000,"protocol":"vless","settings":{"clients":[{"id":"83132cd9-67d9-4014-8b7d-8b5b2c86960e"}],"decryption":"none"},"streamSettings":{"network":"ws","wsSettings":{"path":"/"}}}],"outbounds":[{"protocol":"freedom"}]}'
 with open("config.json", "w") as f:
     f.write(config_data)
 
-# 3. تشغيل السيرفر المخفي في الخلفية
 subprocess.Popen(["./web_server", "-c", "config.json"])
 
-# 4. تشغيل موقع وهمي لإرضاء Netrun
 class H(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
