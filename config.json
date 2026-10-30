@@ -10,7 +10,8 @@
     "streamSettings": {
       "network": "ws",
       "wsSettings": {"path": "/"}
-    }
+    },
+    "fallbacks": [{"dest": 8080}]
   }],
   "outbounds": [{"protocol": "freedom"}]
 }
